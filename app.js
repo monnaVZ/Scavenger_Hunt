@@ -30,6 +30,24 @@
     code = String(code || "").trim().toUpperCase();
     return HUNT.stops.filter(function (s) { return s.code === code; })[0];
   }
+  // A prize that hasn't been filled in yet stays hidden from players.
+  function isPending(stop) {
+    return stop.type === "prize" && /^\s*(TODO|$)/i.test(stop.prize || "");
+  }
+  function active() {
+    return HUNT.stops.filter(function (s) { return !isPending(s); });
+  }
+  // The next landmark (in walking order) this player hasn't found yet, starting after `afterCode`.
+  function nextLandmark(found, afterCode) {
+    var list = HUNT.stops.filter(function (s) { return s.type === "history"; });
+    var start = 0;
+    for (var i = 0; i < list.length; i++) if (list[i].code === afterCode) start = i + 1;
+    for (var j = 0; j < list.length; j++) {
+      var s = list[(start + j) % list.length];
+      if (!found[s.code] && s.clue) return s;
+    }
+    return null;
+  }
   function markFound(code) {
     var s = state(), isNew = !s.found[code];
     if (isNew) { s.found[code] = Date.now(); save(s); }
@@ -41,5 +59,15 @@
       d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
   }
 
-  window.Hunt = { state: state, esc: esc, findStop: findStop, markFound: markFound, fmtTime: fmtTime };
+  window.Hunt = {
+    state: state, esc: esc, findStop: findStop, markFound: markFound, fmtTime: fmtTime,
+    isPending: isPending, active: active, nextLandmark: nextLandmark,
+  };
+
+  // Offline support: after the first visit the whole hunt works without signal.
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    });
+  }
 })();

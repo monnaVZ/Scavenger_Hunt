@@ -27,12 +27,23 @@
       <div class="bar"><span id="bar" style="width:0"></span></div>
     </section>
 
+    <section class="card finish" id="finish-card" hidden>
+      <h2>You found them all!</h2>
+      <p>Every code in Rhodes, done. You now know this village better than most people who have driven through it. Well played!</p>
+    </section>
+
+    <section class="card clue" id="clue-card" hidden>
+      <h2 id="clue-title">Your next clue</h2>
+      <p id="clue-text" style="margin:0"></p>
+    </section>
+
     <section class="card">
       <h2>How to play</h2>
       <ol class="steps">
-        <li>Wander around Rhodes and look for our QR code posters.</li>
+        <li>Follow the clue to a landmark and look for our QR code poster.</li>
         <li>Open your phone camera and point it at the code.</li>
         <li>Tap the link to see a prize or the story of the landmark.</li>
+        <li>Each landmark gives you a clue to the next one. Prizes are hidden along the way, with no clues!</li>
         <li>Your finds are saved on your phone. Come back here to see them all.</li>
       </ol>
       <p class="muted" id="contact" style="margin-top:12px"></p>
@@ -55,15 +66,25 @@
     document.getElementById("kicker").textContent = H.town + " · " + H.dates;
     if (H.contact) document.getElementById("contact").textContent = H.contact;
 
-    var total = H.stops.length;
-    var found = H.stops.filter(function (x) { return s.found[x.code]; })
+    var stops = Hunt.active(), total = stops.length;
+    var found = stops.filter(function (x) { return s.found[x.code]; })
       .sort(function (a, b) { return s.found[b.code] - s.found[a.code]; });
     var nH = found.filter(function (x) { return x.type === "history"; }).length;
     var nP = found.length - nH;
 
     document.getElementById("count").textContent = found.length;
     document.getElementById("of").textContent = "of " + total;
-    document.getElementById("split").textContent = nH + " landmarks · " + nP + " prizes";
+    document.getElementById("split").textContent =
+      nH + (nH === 1 ? " landmark" : " landmarks") + " · " + nP + (nP === 1 ? " prize" : " prizes");
+
+    var next = Hunt.nextLandmark(s.found, null);
+    if (total && found.length === total) {
+      document.getElementById("finish-card").hidden = false;
+    } else if (next) {
+      document.getElementById("clue-card").hidden = false;
+      document.getElementById("clue-title").textContent = found.length ? "Your next clue" : "Your first clue";
+      document.getElementById("clue-text").textContent = next.clue;
+    }
     document.getElementById("bar").style.width = (total ? (100 * found.length / total) : 0) + "%";
 
     if (found.length) {

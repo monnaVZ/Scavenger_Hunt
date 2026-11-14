@@ -22,9 +22,14 @@
       html =
         '<section class="card"><h2>Hmm, that code isn\'t ours</h2>' +
         "<p>We couldn't find this QR code. Try scanning it again, or head back to see your finds.</p></section>";
+    } else if (Hunt.isPending(stop)) {
+      html =
+        '<section class="card"><h2>Not unlocked yet</h2>' +
+        "<p>You've found a real code, but this one isn't switched on yet. Come back and scan it again a little later!</p></section>";
     } else {
       var r = Hunt.markFound(stop.code), s = r.state;
-      var total = H.stops.length, n = Object.keys(s.found).filter(function (c) { return Hunt.findStop(c); }).length;
+      var act = Hunt.active(), total = act.length;
+      var n = act.filter(function (x) { return s.found[x.code]; }).length;
       document.title = stop.name + " · " + H.title;
 
       html += '<p class="' + (r.isNew ? "new-find" : "muted") + '">' +
@@ -54,6 +59,14 @@
           (stop.story || []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") +
           (stop.funFact ? '<p class="funfact"><strong>Did you know?</strong> ' + esc(stop.funFact) + "</p>" : "") +
           "</section>";
+      }
+
+      var next = Hunt.nextLandmark(s.found, stop.type === "history" ? stop.code : null);
+      if (n === total) {
+        html += '<section class="card finish"><h2>You found them all!</h2>' +
+          "<p>That was the last one. Every code in Rhodes, done. Well played!</p></section>";
+      } else if (next) {
+        html += '<section class="card clue"><h2>Your next clue</h2><p style="margin:0">' + esc(next.clue) + "</p></section>";
       }
     }
 

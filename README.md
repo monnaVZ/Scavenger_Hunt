@@ -11,6 +11,10 @@ A plain static site: no server, no database, no sign-up. Works on any free stati
 - Each phone gets a 4-letter player ID shown on prize tickets, so prize-givers can jot down
   who has claimed.
 - Codes are random, so players can't guess the next stop by changing the link.
+- Each landmark page shows a **clue** to the next landmark the player hasn't found yet.
+- A prize whose text still says TODO is **hidden**: not counted, and its poster says "not unlocked yet".
+- `sw.js` saves the site on the phone, so after the first visit it works **without signal**.
+- Poster locations are kept out of this public repo (see `spots.json` in the QR output folder).
 
 ## Files
 | File | What it is |

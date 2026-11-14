@@ -82,3 +82,7 @@ a { color: var(--accent); }
 .btn.secondary { background: transparent; color: var(--accent); border: 2px solid var(--accent); margin-top: 10px; }
 .new-find { color: var(--accent-2); font-weight: 600; }
 footer { text-align: center; color: var(--muted); font-size: .85rem; margin-top: 24px; }
+
+.clue { border-left: 6px solid var(--gold); }
+.finish { background: var(--accent-2); color: #fff; border-color: var(--accent-2); text-align: center; }
+.finish p { margin: 0; }

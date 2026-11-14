@@ -10,6 +10,9 @@ Needs Node.js (to read data.js). Output (default ../qr-codes next to the site):
     <CODE>.png        one QR image per stop
     posters.html      print it (one poster per page) and stick them up around town
     placement.csv     organiser checklist: which poster goes where
+
+Poster locations are kept out of the public site. If the output folder contains a
+spots.json ({"CODE": "where to put it"}), those go into placement.csv.
 """
 import csv, html, json, os, subprocess, sys
 import qrcode
@@ -26,6 +29,9 @@ os.makedirs(out, exist_ok=True)
 js = "global.window={};require(%r);process.stdout.write(JSON.stringify(window.HUNT))" % os.path.join(site, "data.js")
 hunt = json.loads(subprocess.check_output(["node", "-e", js]))
 
+spots_file = os.path.join(out, "spots.json")
+spots = json.load(open(spots_file)) if os.path.exists(spots_file) else {}
+
 posters, rows = [], []
 for i, s in enumerate(hunt["stops"], 1):
     url = f"{base}stop.html?c={s['code']}"
@@ -33,7 +39,7 @@ for i, s in enumerate(hunt["stops"], 1):
     qr.add_data(url)
     qr.make(fit=True)
     qr.make_image(fill_color="black", back_color="white").save(os.path.join(out, f"{s['code']}.png"))
-    rows.append([i, s["code"], s["type"], s["name"], s.get("spot", ""), url])
+    rows.append([i, s["code"], s["type"], s["name"], spots.get(s["code"], ""), url])
     posters.append(f"""
 <section class="poster">
   <div class="kicker">{html.escape(hunt['title'])}</div>
