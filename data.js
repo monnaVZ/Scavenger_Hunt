@@ -9,6 +9,8 @@
  * type: "prize"    → reveals a prize and how to claim it
  * clue              → (landmarks) hint shown to players who are looking for this stop next
  *
+ * af                → Afrikaans version of the same fields (falls back to English if missing)
+ *
  * A prize whose `prize` text still starts with "TODO" stays hidden: it is not counted,
  * and scanning its poster shows "not unlocked yet". Fill it in and it goes live.
  *
@@ -22,6 +24,15 @@ window.HUNT = {
     "Scan each one to win a prize or uncover the stories behind our historic landmarks. " +
     "Grab your phone, gather your friends and discover Rhodes like never before!",
   dates: "This weekend", // or e.g. "Sat 21 – Sun 22 November"
+  goatcounter: "", // optional visitor counter: your code from goatcounter.com, e.g. "rhodeshunt"
+  af: {
+    title: "Stoepsit Fees Skattejag",
+    intro:
+      "Verken Rhodes hierdie naweek terwyl jy soek na QR-kodes wat oral in die dorp weggesteek is. " +
+      "Skandeer elkeen om 'n prys te wen of die stories agter ons historiese landmerke te ontdek. " +
+      "Gryp jou foon, kry jou vriende bymekaar en ontdek Rhodes soos nog nooit tevore nie!",
+    dates: "Hierdie naweek",
+  },
   contact: "", // optional, e.g. "WhatsApp 082 000 0000 for help"
 
   stops: [
@@ -37,6 +48,15 @@ window.HUNT = {
       ],
       funFact: "In 1997 the whole village was declared a Conservation Area to protect its old buildings.",
       clue: "Start where every visitor does: look for the village notice board near the way into Rhodes.",
+      af: {
+        name: "Welkom in Rhodes",
+        year: "Gestig 1891",
+        story: [
+          "Jy staan in 'n dorpie wat al sedert 16 September 1891 hier is. Dit is uitgelê op die plaas Tintern van Jim Vorster, wat 100 erwe verkoop en die res as gemeenskaplike weiveld gehou het. Dié meent is vandag nog oop vir stappers. Rhodes is vernoem na Cecil John Rhodes, destyds Eerste Minister van die Kaap. Op sowat 1 840 m, net 16 km van Lesotho af, is dit een van die hoogste dorpies in Suid-Afrika. Sneeu is al in elke maand van die jaar hier aangeteken, selfs op Nuwejaarsdag 2001.",
+        ],
+        funFact: "In 1997 is die hele dorpie tot 'n Bewaringsgebied verklaar om sy ou geboue te beskerm.",
+        clue: "Begin waar elke besoeker begin: soek die dorp se kennisgewingbord naby die ingang na Rhodes.",
+      },
     },
     {
       code: "V3HULV",
@@ -49,6 +69,15 @@ window.HUNT = {
       ],
       funFact: "Some locals say the village itself was once called Rossville, but historians have found no record of it.",
       clue: "Find the tall building where a cornerstone was laid in 1892 and the village gathers on Sundays.",
+      af: {
+        name: "Die NG Kerk",
+        year: "Hoeksteen gelê 1892",
+        story: [
+          "Die hoeksteen van hierdie kerk is op 15 Junie 1892 gelê, toe net 250 tot 300 mense hier gewoon het. Die gemeente is Rossville genoem na dominee David Ross, 'n Skot wat te perd van Lady Grey af gekom het. Hy het elke Sondag in Engels en Afrikaans gepreek. Tydens die Anglo-Boereoorlog is hy gearresteer en in die kamp by Aliwal-Noord aangehou. Hy is sonder skoene vrygelaat, het kaalvoet al die pad terug na Lady Grey gestap, en het gesweer om nooit weer in Engels te preek nie.",
+        ],
+        funFact: "Party inwoners sê die dorpie self is eens Rossville genoem, maar geskiedkundiges het geen bewys daarvan gevind nie.",
+        clue: "Soek die hoë gebou waar 'n hoeksteen in 1892 gelê is en die dorp Sondae bymekaarkom.",
+      },
     },
     {
       code: "DWUHCH",
@@ -61,6 +90,15 @@ window.HUNT = {
       ],
       funFact: "It was built on budget, for £558 14s 10d.",
       clue: "Look for a quaint gable and a little turret, where letters were once posted and troublemakers locked up.",
+      af: {
+        name: "Die Ou Hofsaal, Tronk en Poskantoor",
+        year: "Geopen 1900",
+        story: [
+          "Voor hierdie gebou het papierwerk 'n rit van vyf tot ses uur met perd en kar na Barkly-Oos beteken. Die Kaapse regering se Departement van Openbare Werke het hierdie gekombineerde hof, tronk en poskantoor self gebou, omdat albei bouers se kwotasies te hoog was. Die werk het in 1898 begin, gaan staan toe die geld opraak, en weer gestop toe Boeremagte die distrik in November 1899 binneval. Dit het uiteindelik in Augustus 1900 geopen. 'n Koerant van destyds het dit \"ietwat eienaardig van ontwerp\" genoem, en die gewel en torinkie val vandag nog op.",
+        ],
+        funFact: "Dit is binne die begroting gebou, vir £558 14s 10d.",
+        clue: "Soek 'n eienaardige gewel en 'n klein torinkie, waar briewe eens gepos en moeilikheidmakers toegesluit is.",
+      },
     },
     {
       code: "ZCJVTY",
@@ -73,6 +111,15 @@ window.HUNT = {
       ],
       funFact: "The village was invaded 29 times during the Anglo-Boer War, between June 1901 and February 1902.",
       clue: "Thirsty? Head for the old pub where farmers and traders once gambled fortunes away.",
+      af: {
+        name: "Rhodes Hotel en die De Wydeman-kroeg",
+        year: "Geopen 1899",
+        story: [
+          "Die Rhodes Hotel het in 1899 geopen, 'n gerieflike tuiste in wat toe 'n wilde grensgebied was. In sy kroeg, De Wydeman, het handelaars en boere van regoor die distrik bymekaargekom om te drink, te gesels en te dobbel. Volgens plaaslike oorlewering is meer as een fortuin oor dié tafels gewen en verloor. Die kroeg is gerestoureer en voel nog baie soos meer as 'n eeu gelede.",
+        ],
+        funFact: "Die dorpie is 29 keer tydens die Anglo-Boereoorlog binnegeval, tussen Junie 1901 en Februarie 1902.",
+        clue: "Dors? Mik na die ou kroeg waar boere en handelaars eens fortuine weggedobbel het.",
+      },
     },
     {
       code: "DT95R2",
@@ -85,6 +132,15 @@ window.HUNT = {
       ],
       funFact: "The old school became a protected heritage site in 1987.",
       clue: "Find the place where more than a hundred children once learned their lessons.",
+      af: {
+        name: "Die Ou Rhodes-skool",
+        year: "Gebou 1924",
+        story: [
+          "Skool in Rhodes het in 1894 met 45 leerlinge begin. 'n Jaar later was dit die grootste skool in die Barkly-Oos-distrik. Hierdie gebou is in 1924 voltooi, en teen 1928 het dit 112 leerlinge tot standerd 8 onderrig. Soos die boerdery agteruitgegaan het, het die getalle teen 1967 tot net 20 gekrimp, en die skool het in die 1970's gesluit. Volgens legende het die beroemde argitek sir Herbert Baker dit ontwerp, maar hy het Suid-Afrika toe reeds verlaat, so dit was waarskynlik die firma Kendall en Morris.",
+        ],
+        funFact: "Die ou skool het in 1987 'n beskermde erfenisterrein geword.",
+        clue: "Soek die plek waar meer as honderd kinders eens hul lesse geleer het.",
+      },
     },
     {
       code: "9C5XGQ",
@@ -97,6 +153,15 @@ window.HUNT = {
       ],
       funFact: "In 1970 some houses in Rhodes were simply given away, or sold for the unpaid rates.",
       clue: "Seek the inn that has been a hotel, a hostel and a hippie haven.",
+      af: {
+        name: "Walkerbouts Inn: Hotel, Koshuis, Hippie-hawe",
+        year: "Sedert 1905",
+        story: [
+          "Min geboue hier het al soveel lewens gehad soos dié een. Dit het begin as die Ginsberg Hotel, wat H. Venter van 1905 af bedryf het. Ná 'n brand is dit herbou as die koshuis vir die dorp se kosskool. Toe die skool sluit, het dit 'n gesinswoning geword, en in die laat 1970's en vroeë 1980's was dit 'n spilpunt van die dorp se hippie-era, toe vrygeeste 'n byna leë Rhodes herontdek het. Later het die span wat die Tiffindell-ski-oord gebou het hier gebly, en in 1996 het dit as Walkerbouts Inn geopen.",
+        ],
+        funFact: "In 1970 is party huise in Rhodes sommer weggegee, of verkoop vir die onbetaalde erfbelasting.",
+        clue: "Soek die herberg wat al 'n hotel, 'n koshuis en 'n hippie-hawe was.",
+      },
     },
     {
       code: "V7VQLF",
@@ -109,6 +174,15 @@ window.HUNT = {
       ],
       funFact: "The receipt lists the trees as \"Pinus insegnus\", probably a spelling slip for Pinus insignis, the Monterey pine.",
       clue: "Look up! Find the tall old trees that have no business growing this high in the mountains.",
+      af: {
+        name: "Die Legende van die Dennebome",
+        year: "",
+        story: [
+          "Rhodes lê bo die natuurlike boomgrens, so elke hoë boom wat jy sien, is geplant. Volgens legende was Cecil Rhodes so in sy skik dat die dorpie sy naam gekry het dat hy 'n hele wavrag dennebome as dankie gestuur het, en in party weergawes ook £500, wat saam met die amptenaar wat dit ontvang het verdwyn het. Die rekords vertel 'n vaaler storie: die dorpie het die Barkly-Oos-munisipaliteit £1 17s 3d vir dennebome betaal. Party van daardie bome staan vandag nog in die dorp.",
+        ],
+        funFact: "Die kwitansie noem die bome \"Pinus insegnus\", waarskynlik 'n spelfout vir Pinus insignis, die Monterey-den.",
+        clue: "Kyk op! Soek die hoë ou bome wat niks te soek het so hoog in die berge nie.",
+      },
     },
     {
       code: "5LDK7E",
@@ -121,6 +195,15 @@ window.HUNT = {
       ],
       funFact: "The village's most prosperous years were 1911 to 1945, and a 1950s wool boom paid a pound for a pound of wool.",
       clue: "Follow the water. Look for a stone-lined furrow running beside a main street.",
+      af: {
+        name: "Leivore, Kothuise en Kerkhuisies",
+        year: "Meestal omstreeks 1900 gebou",
+        story: [
+          "Kyk af na die grondstrate: die leivore langsaan is met gekapte klip en rivierklip uitgevoer. Kyk op en jy sien Victoriaanse kothuise, deftige handelaarshuise en klein platdak-kerkhuisies. Boere het te perd ingekom en dié huisies as dorpshuise vir kerknaweke en Nagmaal aangehou. Die meeste geboue is omstreeks 1900 opgerig, en sowat 15 is in 'n universiteitsopname as topgraad-erfenisgeboue aangewys.",
+        ],
+        funFact: "Die dorpie se voorspoedigste jare was 1911 tot 1945, en in die wolhoogbloei van die 1950's is 'n pond vir 'n pond wol betaal.",
+        clue: "Volg die water. Soek 'n klipvoor wat langs 'n hoofstraat loop.",
+      },
     },
     {
       code: "FKME2A",
@@ -133,6 +216,15 @@ window.HUNT = {
       ],
       funFact: "Ben Macdhui, at 3,001 m the highest peak in the Eastern Cape, is just up the road.",
       clue: "Head for the sound of running water on the northern edge of the village, where the trout live.",
+      af: {
+        name: "Bellrivier en die Wilde Forelle",
+        year: "",
+        story: [
+          "Die Bellrivier vorm die noordelike grens van die dorpie. Dit is beroemd onder vlieghengelaars vir sy wilde forelle. Elke jaar bring die Wild Trout Festival hengelaars om in die Bell en nabygeleë strome te kom visvang, met sowat 180 km lopende water binne 'n uur se ry. Hou ook die lug dop: 'n aasvoëlrestaurant op die meent lok die Kransaasvoël en die skaars Baardaasvoël.",
+        ],
+        funFact: "Ben Macdhui, met 3 001 m die hoogste piek in die Oos-Kaap, is net hier anderkant.",
+        clue: "Mik na die geluid van lopende water aan die noordekant van die dorpie, waar die forelle bly.",
+      },
     },
     {
       code: "H33D8J",
@@ -145,20 +237,54 @@ window.HUNT = {
       ],
       funFact: "Barkly East is only 60 km away, but in the 1890s the trip took five to six hours by horse and cart.",
       clue: "Take the road that leads out towards the mountains and the high pass.",
+      af: {
+        name: "Naudesnekpas",
+        year: "Voltooi 1905",
+        story: [
+          "Die pad oor die berge het sy naam te danke aan Stephanus Naudé van die plaas Dunley, die eerste mens wat die bergreeks met 'n ossewa oorgesteek het. Op sy aanbeveling het werk aan 'n behoorlike pas in 1895 begin. Swaar sneeu en die Anglo-Boereoorlog het die bouwerk gestop, en ingenieur Alfred Bain het dit uiteindelik in 1905 voltooi. Dele van die ou wapad is nog sigbaar. Vandag is dit een van die hoogste padpasse in Suid-Afrika, en Rhodes lê in die middel van agt bergpasse.",
+        ],
+        funFact: "Barkly-Oos is net 60 km ver, maar in die 1890's het die rit vyf tot ses uur met perd en kar geduur.",
+        clue: "Vat die pad wat uit die dorp na die berge en die hoë pas lei.",
+      },
     },
 
-    // ---------- PRIZES (TODO: content from the prizes thread) ----------
+    // ---------- PRIZES (EXAMPLES from the prizes thread — replace with the real prizes) ----------
+    // placeholder: true shows an "example prize" banner on the page. Remove it once the prize is real.
     {
-      code: "UBH3QX",
-      type: "prize",
-      name: "Prize 1 (TODO)",
-      sponsor: "", // e.g. "Rhodes Hotel"
-      prize: "TODO: What the player wins, e.g. 'A free coffee'",
-      claim: "TODO: How to claim, e.g. 'Show this screen at the Rhodes Hotel bar before 5pm Sunday.'",
-      limit: "", // optional, e.g. "First 20 players only"
+      code: "UBH3QX", type: "prize", placeholder: true,
+      name: "Coffee and rusks",
+      sponsor: "Sponsor to be confirmed",
+      prize: "A free coffee and a rusk",
+      claim: "Show this screen at the sponsor's counter before 4pm Sunday.",
+      limit: "First 20 players only",
+      af: { name: "Koffie en beskuit", prize: "'n Gratis koffie en 'n beskuit", claim: "Wys hierdie skerm by die borg se toonbank voor 16:00 Sondag.", limit: "Slegs die eerste 20 spelers", sponsor: "Borg moet nog bevestig word" },
     },
-    { code: "98F74D", type: "prize", name: "Prize 2 (TODO)", sponsor: "", prize: "TODO", claim: "TODO", limit: "" },
-    { code: "CU5FRW", type: "prize", name: "Prize 3 (TODO)", sponsor: "", prize: "TODO", claim: "TODO", limit: "" },
-    { code: "UDMCR4", type: "prize", name: "Prize 4 (TODO)", sponsor: "", prize: "TODO", claim: "TODO", limit: "" },
+    {
+      code: "98F74D", type: "prize", placeholder: true,
+      name: "R100 shop voucher",
+      sponsor: "Sponsor to be confirmed",
+      prize: "A R100 voucher to spend at the sponsor's shop",
+      claim: "Show this screen at the sponsor's shop before 4pm Sunday.",
+      limit: "First 5 players only",
+      af: { name: "R100-winkelbewys", prize: "'n Bewys van R100 om by die borg se winkel te spandeer", claim: "Wys hierdie skerm by die borg se winkel voor 16:00 Sondag.", limit: "Slegs die eerste 5 spelers", sponsor: "Borg moet nog bevestig word" },
+    },
+    {
+      code: "CU5FRW", type: "prize", placeholder: true,
+      name: "Stoepsit Fees T-shirt",
+      sponsor: "Stoepsit Fees",
+      prize: "An official Stoepsit Fees T-shirt",
+      claim: "Show this screen at the Stoepsit Fees info stand before 4pm Sunday.",
+      limit: "First 10 players only",
+      af: { name: "Stoepsit Fees-T-hemp", prize: "'n Amptelike Stoepsit Fees-T-hemp", claim: "Wys hierdie skerm by die Stoepsit Fees-inligtingstalletjie voor 16:00 Sondag.", limit: "Slegs die eerste 10 spelers" },
+    },
+    {
+      code: "UDMCR4", type: "prize", placeholder: true,
+      name: "Grand prize: weekend away",
+      sponsor: "Sponsor to be confirmed",
+      prize: "A night for two at a Rhodes guesthouse",
+      claim: "Show this screen at the Stoepsit Fees info stand before 4pm Sunday.",
+      limit: "First player only",
+      af: { name: "Hoofprys: naweek weg", prize: "'n Nag vir twee by 'n gastehuis in Rhodes", claim: "Wys hierdie skerm by die Stoepsit Fees-inligtingstalletjie voor 16:00 Sondag.", limit: "Slegs die eerste speler", sponsor: "Borg moet nog bevestig word" },
+    },
   ],
 };

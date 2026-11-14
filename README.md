@@ -14,6 +14,12 @@ A plain static site: no server, no database, no sign-up. Works on any free stati
 - Each landmark page shows a **clue** to the next landmark the player hasn't found yet.
 - A prize whose text still says TODO is **hidden**: not counted, and its poster says "not unlocked yet".
 - `sw.js` saves the site on the phone, so after the first visit it works **without signal**.
+- **English/Afrikaans** switch at the top of every page. Each stop has an `af` block in `data.js`.
+- Prize pages have a **"Prize-giver: mark as handed over"** button (tap twice). It stamps the ticket CLAIMED on that phone.
+  Use it together with the printed tick sheets, since a determined player could still clear their browser.
+- Prizes marked `placeholder: true` show an "example prize" banner. Remove the flag when the prize is real.
+- Players who can't scan can type the poster's 6-character code on the home page.
+- Optional visitor counter: sign up free at goatcounter.com and put your code in `goatcounter` in `data.js`.
 - Poster locations are kept out of this public repo (see `spots.json` in the QR output folder).
 
 ## Files

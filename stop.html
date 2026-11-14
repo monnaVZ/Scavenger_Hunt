@@ -8,71 +8,95 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="wrap" id="main"></main>
+  <main class="wrap">
+    <div class="topbar"><button id="lang" class="lang" type="button"></button></div>
+    <div id="main"></div>
+  </main>
 
   <script src="data.js"></script>
   <script src="app.js"></script>
   <script>
-    var H = window.HUNT, esc = Hunt.esc, main = document.getElementById("main");
+    var H = window.HUNT, esc = Hunt.esc, T = Hunt.T, L = Hunt.L, main = document.getElementById("main");
+    Hunt.initLang();
     var code = new URLSearchParams(location.search).get("c");
     var stop = Hunt.findStop(code);
     var html = "";
 
+    function card(title, text) {
+      return '<section class="card"><h2>' + esc(title) + "</h2><p>" + esc(text) + "</p></section>";
+    }
+
     if (!stop) {
-      html =
-        '<section class="card"><h2>Hmm, that code isn\'t ours</h2>' +
-        "<p>We couldn't find this QR code. Try scanning it again, or head back to see your finds.</p></section>";
+      html = card(T("badTitle"), T("badText"));
     } else if (Hunt.isPending(stop)) {
-      html =
-        '<section class="card"><h2>Not unlocked yet</h2>' +
-        "<p>You've found a real code, but this one isn't switched on yet. Come back and scan it again a little later!</p></section>";
+      html = card(T("lockedTitle"), T("lockedText"));
     } else {
       var r = Hunt.markFound(stop.code), s = r.state;
       var act = Hunt.active(), total = act.length;
       var n = act.filter(function (x) { return s.found[x.code]; }).length;
-      document.title = stop.name + " · " + H.title;
+      document.title = L(stop, "name") + " · " + L(H, "title");
 
       html += '<p class="' + (r.isNew ? "new-find" : "muted") + '">' +
-        (r.isNew ? "New find! " : "You found this one already. ") +
-        "That's " + n + " of " + total + ".</p>";
+        esc(T(r.isNew ? "newFind" : "already")) + " " +
+        esc(T("thatsNofT").replace("{n}", n).replace("{t}", total)) + "</p>";
 
       if (stop.type === "prize") {
+        var claimedAt = s.claimed[stop.code];
         html +=
-          '<section class="card prize-box">' +
-          '<span class="tag prize badge">You found a prize</span>' +
-          "<h1>" + esc(stop.name) + "</h1>" +
-          '<div class="big">' + esc(stop.prize) + "</div>" +
-          (stop.sponsor ? '<p class="muted">Thanks to ' + esc(stop.sponsor) + "</p>" : "") +
-          "<p>" + esc(stop.claim) + "</p>" +
-          (stop.limit ? '<p class="muted">' + esc(stop.limit) + "</p>" : "") +
-          '<div class="claim-ticket">Show this screen to claim<br>' +
-          "Player <strong>" + esc(s.player) + "</strong> · " + esc(stop.code) + "<br>" +
-          "Found " + esc(Hunt.fmtTime(s.found[stop.code])) + "</div>" +
+          '<section class="card prize-box' + (claimedAt ? " is-claimed" : "") + '">' +
+          '<span class="tag prize badge">' + esc(T("foundPrize")) + "</span>" +
+          (stop.placeholder ? '<p class="example">' + esc(T("example")) + "</p>" : "") +
+          "<h1>" + esc(L(stop, "name")) + "</h1>" +
+          '<div class="big">' + esc(L(stop, "prize")) + "</div>" +
+          (stop.sponsor ? '<p class="muted">' + esc(T("thanksTo")) + " " + esc(L(stop, "sponsor")) + "</p>" : "") +
+          "<p>" + esc(L(stop, "claim")) + "</p>" +
+          (stop.limit ? '<p class="muted">' + esc(L(stop, "limit")) + "</p>" : "") +
+          '<div class="claim-ticket">' +
+          (claimedAt
+            ? '<div class="stamp">' + esc(T("claimed")) + "</div>" + esc(T("claimedNote")) + "<br>"
+            : esc(T("showToClaim")) + "<br>") +
+          esc(T("player")) + " <strong>" + esc(s.player) + "</strong> · " + esc(stop.code) + "<br>" +
+          esc(T("found")) + " " + esc(Hunt.fmtTime(s.found[stop.code])) + "</div>" +
+          (claimedAt ? "" : '<button class="btn secondary" id="claim-btn" type="button">' + esc(T("staffMark")) + "</button>") +
           "</section>";
       } else {
+        var img = L(stop, "image");
         html +=
           '<section class="card">' +
-          '<span class="tag history badge">Historic landmark</span>' +
-          "<h1>" + esc(stop.name) + "</h1>" +
-          (stop.year ? '<p class="muted">' + esc(stop.year) + "</p>" : "") +
-          (stop.image ? '<img class="stop-img" src="' + esc(stop.image) + '" alt="' + esc(stop.name) + '">' : "") +
-          (stop.story || []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") +
-          (stop.funFact ? '<p class="funfact"><strong>Did you know?</strong> ' + esc(stop.funFact) + "</p>" : "") +
+          '<span class="tag history badge">' + esc(T("historic")) + "</span>" +
+          "<h1>" + esc(L(stop, "name")) + "</h1>" +
+          (L(stop, "year") ? '<p class="muted">' + esc(L(stop, "year")) + "</p>" : "") +
+          (img ? '<img class="stop-img" src="' + esc(img) + '" alt="' + esc(L(stop, "name")) + '">' : "") +
+          (L(stop, "story") || []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") +
+          (L(stop, "funFact") ? '<p class="funfact"><strong>' + esc(T("didYouKnow")) + "</strong> " + esc(L(stop, "funFact")) + "</p>" : "") +
           "</section>";
       }
 
       var next = Hunt.nextLandmark(s.found, stop.type === "history" ? stop.code : null);
       if (n === total) {
-        html += '<section class="card finish"><h2>You found them all!</h2>' +
-          "<p>That was the last one. Every code in Rhodes, done. Well played!</p></section>";
+        html += '<section class="card finish"><h2>' + esc(T("allTitle")) + "</h2><p>" + esc(T("allStop")) + "</p></section>";
       } else if (next) {
-        html += '<section class="card clue"><h2>Your next clue</h2><p style="margin:0">' + esc(next.clue) + "</p></section>";
+        html += '<section class="card clue"><h2>' + esc(T("nextClue")) + '</h2><p style="margin:0">' + esc(L(next, "clue")) + "</p></section>";
       }
     }
 
-    html += '<a class="btn" href="index.html">See all my finds</a>' +
-      '<footer>' + esc(H.title) + " · " + esc(H.town) + "</footer>";
+    html += '<a class="btn" href="index.html">' + esc(T("seeAll")) + "</a>" +
+      "<footer>" + esc(L(H, "title")) + " · " + esc(H.town) + "</footer>";
     main.innerHTML = html;
+
+    // Prize-giver taps twice to mark the prize as handed over on this phone.
+    var btn = document.getElementById("claim-btn");
+    if (btn) {
+      var armed = false;
+      btn.onclick = function () {
+        if (!armed) {
+          armed = true; btn.textContent = T("tapAgain"); btn.classList.add("armed");
+          setTimeout(function () { armed = false; btn.textContent = T("staffMark"); btn.classList.remove("armed"); }, 4000);
+        } else {
+          Hunt.markClaimed(stop.code); location.reload();
+        }
+      };
+    }
   </script>
 </body>
 </html>

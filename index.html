@@ -6,12 +6,16 @@
   <meta name="theme-color" content="#b5532a">
   <title>Stoepsit Fees Scavenger Hunt</title>
   <meta name="description" content="Hunt for QR codes hidden across Rhodes. Win prizes and uncover the stories behind our historic landmarks.">
+  <meta property="og:title" content="Stoepsit Fees Scavenger Hunt">
+  <meta property="og:description" content="Hunt for QR codes hidden across Rhodes. Win prizes and uncover the stories behind our historic landmarks.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="wrap">
+    <div class="topbar"><button id="lang" class="lang" type="button"></button></div>
+
     <section class="hero">
-      <div class="kicker" id="kicker">Rhodes · This weekend</div>
+      <div class="kicker" id="kicker"></div>
       <h1 id="title">Stoepsit Fees Scavenger Hunt</h1>
       <p id="intro"></p>
     </section>
@@ -20,7 +24,7 @@
       <div class="progress">
         <div class="num" id="count">0</div>
         <div>
-          <div><strong>codes found</strong> <span class="muted" id="of"></span></div>
+          <div><strong id="lbl-found"></strong> <span class="muted" id="of"></span></div>
           <div class="muted" id="split"></div>
         </div>
       </div>
@@ -28,43 +32,60 @@
     </section>
 
     <section class="card finish" id="finish-card" hidden>
-      <h2>You found them all!</h2>
-      <p>Every code in Rhodes, done. You now know this village better than most people who have driven through it. Well played!</p>
+      <h2 id="finish-title"></h2>
+      <p id="finish-text"></p>
     </section>
 
     <section class="card clue" id="clue-card" hidden>
-      <h2 id="clue-title">Your next clue</h2>
+      <h2 id="clue-title"></h2>
       <p id="clue-text" style="margin:0"></p>
     </section>
 
     <section class="card">
-      <h2>How to play</h2>
-      <ol class="steps">
-        <li>Follow the clue to a landmark and look for our QR code poster.</li>
-        <li>Open your phone camera and point it at the code.</li>
-        <li>Tap the link to see a prize or the story of the landmark.</li>
-        <li>Each landmark gives you a clue to the next one. Prizes are hidden along the way, with no clues!</li>
-        <li>Your finds are saved on your phone. Come back here to see them all.</li>
-      </ol>
+      <h2 id="how-title"></h2>
+      <ol class="steps" id="how"></ol>
       <p class="muted" id="contact" style="margin-top:12px"></p>
     </section>
 
+    <section class="card">
+      <form id="code-form" autocomplete="off">
+        <label for="code" id="code-label"></label>
+        <div class="code-row">
+          <input id="code" name="c" maxlength="6" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="ABC123" required>
+          <button class="btn" type="submit" id="code-go"></button>
+        </div>
+      </form>
+    </section>
+
     <section class="card" id="found-card" hidden>
-      <h2>Your finds</h2>
+      <h2 id="finds-title"></h2>
       <ul class="found-list" id="found"></ul>
     </section>
 
-    <footer>Made for the Stoepsit Fees · Rhodes</footer>
+    <footer id="footer"></footer>
   </main>
 
   <script src="data.js"></script>
   <script src="app.js"></script>
   <script>
-    var H = window.HUNT, s = Hunt.state(), esc = Hunt.esc;
-    document.getElementById("title").textContent = H.title;
-    document.getElementById("intro").textContent = H.intro;
-    document.getElementById("kicker").textContent = H.town + " · " + H.dates;
-    if (H.contact) document.getElementById("contact").textContent = H.contact;
+    var H = window.HUNT, s = Hunt.state(), esc = Hunt.esc, T = Hunt.T, L = Hunt.L;
+    function set(id, text) { document.getElementById(id).textContent = text; }
+    Hunt.initLang();
+
+    document.title = L(H, "title");
+    set("title", L(H, "title"));
+    set("intro", L(H, "intro"));
+    set("kicker", H.town + " · " + L(H, "dates"));
+    if (H.contact) set("contact", L(H, "contact"));
+    set("lbl-found", T("codesFound"));
+    set("how-title", T("howTitle"));
+    document.getElementById("how").innerHTML = T("how").map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("");
+    set("code-label", T("cantScan"));
+    set("code-go", T("go"));
+    set("finds-title", T("yourFinds"));
+    set("finish-title", T("allTitle"));
+    set("finish-text", T("allHome"));
+    set("footer", T("madeFor") + " · " + H.town);
 
     var stops = Hunt.active(), total = stops.length;
     var found = stops.filter(function (x) { return s.found[x.code]; })
@@ -72,29 +93,34 @@
     var nH = found.filter(function (x) { return x.type === "history"; }).length;
     var nP = found.length - nH;
 
-    document.getElementById("count").textContent = found.length;
-    document.getElementById("of").textContent = "of " + total;
-    document.getElementById("split").textContent =
-      nH + (nH === 1 ? " landmark" : " landmarks") + " · " + nP + (nP === 1 ? " prize" : " prizes");
+    set("count", found.length);
+    set("of", T("of") + " " + total);
+    set("split", nH + " " + T(nH === 1 ? "landmark" : "landmarks") + " · " + nP + " " + T(nP === 1 ? "prize" : "prizes"));
+    document.getElementById("bar").style.width = (total ? (100 * found.length / total) : 0) + "%";
 
     var next = Hunt.nextLandmark(s.found, null);
     if (total && found.length === total) {
       document.getElementById("finish-card").hidden = false;
     } else if (next) {
       document.getElementById("clue-card").hidden = false;
-      document.getElementById("clue-title").textContent = found.length ? "Your next clue" : "Your first clue";
-      document.getElementById("clue-text").textContent = next.clue;
+      set("clue-title", T(found.length ? "nextClue" : "firstClue"));
+      set("clue-text", L(next, "clue"));
     }
-    document.getElementById("bar").style.width = (total ? (100 * found.length / total) : 0) + "%";
 
     if (found.length) {
       document.getElementById("found-card").hidden = false;
       document.getElementById("found").innerHTML = found.map(function (x) {
         return '<li><a href="stop.html?c=' + encodeURIComponent(x.code) + '">' +
-          '<span class="tag ' + x.type + '">' + (x.type === "prize" ? "Prize" : "Landmark") + "</span>" +
-          "<span>" + esc(x.name) + "</span></a></li>";
+          '<span class="tag ' + x.type + '">' + esc(T(x.type === "prize" ? "tagPrize" : "tagLandmark")) + "</span>" +
+          "<span>" + esc(L(x, "name")) + "</span></a></li>";
       }).join("");
     }
+
+    document.getElementById("code-form").onsubmit = function (e) {
+      e.preventDefault();
+      var c = document.getElementById("code").value.replace(/[^a-z0-9]/gi, "").toUpperCase();
+      if (c) location.href = "stop.html?c=" + encodeURIComponent(c);
+    };
   </script>
 </body>
 </html>
