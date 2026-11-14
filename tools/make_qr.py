@@ -44,6 +44,7 @@ for i, s in enumerate(hunt["stops"], 1):
     rows.append([i, s["code"], s["type"], s["name"], spots.get(s["code"], ""), url])
     posters.append(f"""
 <section class="poster">
+  <img class="logo" src="logo.png" alt="">
   <div class="kicker">{html.escape(hunt['title'])}</div>
   <h1>Scan me! <span>Skandeer my!</span></h1>
   <p>Point your phone camera here to win a prize<br>or uncover a piece of Rhodes history.</p>
@@ -66,6 +67,10 @@ for i, s in enumerate(hunt["stops"], 1):
   <table><tr><th>#</th><th>Player ID</th><th>Time</th><th>Your initials</th></tr>{lines}</table>
 </section>""")
 
+import shutil
+if os.path.exists(os.path.join(site, "logo.png")):
+    shutil.copy(os.path.join(site, "logo.png"), os.path.join(out, "logo.png"))
+
 with open(os.path.join(out, "placement.csv"), "w", newline="") as f:
     w = csv.writer(f)
     w.writerow(["#", "code", "type", "name", "suggested spot", "url", "placed where", "placed by"])
@@ -76,13 +81,14 @@ with open(os.path.join(out, "posters.html"), "w") as f:
 <style>
 @page {{ size: A4; margin: 12mm; }}
 body {{ font-family: Georgia, serif; margin: 0; color: #2b2118; }}
-.poster {{ page-break-after: always; text-align: center; padding: 10mm 0; }}
+.poster {{ page-break-after: always; text-align: center; padding: 2mm 0; }}
 .kicker {{ text-transform: uppercase; letter-spacing: .15em; font: 600 14pt system-ui, sans-serif; color: #b5532a; }}
 h1 {{ font-size: 44pt; margin: 5mm 0 3mm; }}
 h1 span {{ color: #b5532a; }}
 p {{ font-size: 15pt; margin: 0 0 3mm; }}
 p.af {{ font-style: italic; color: #555; margin-bottom: 6mm; }}
-img {{ width: 130mm; height: 130mm; image-rendering: pixelated; }}
+img {{ width: 118mm; height: 118mm; image-rendering: pixelated; }}
+img.logo {{ width: 34mm; height: 34mm; image-rendering: auto; display: block; margin: 0 auto 3mm; }}
 .type {{ font: 13pt system-ui, sans-serif; margin-top: 5mm; line-height: 1.5; }}
 .type .code {{ font: 700 17pt ui-monospace, monospace; letter-spacing: .12em; }}
 .foot {{ font: 10pt ui-monospace, monospace; color: #888; margin-top: 4mm; }}

@@ -96,3 +96,5 @@ footer { text-align: center; color: var(--muted); font-size: .85rem; margin-top:
 .stamp { display: inline-block; border: 3px solid #e2574c; color: #ff8d84; font-weight: 800; letter-spacing: .2em; padding: 2px 12px; border-radius: 6px; transform: rotate(-4deg); margin-bottom: 8px; }
 .is-claimed .big { text-decoration: line-through; opacity: .6; }
 .btn.armed { background: var(--accent); color: #fff; }
+
+.hero .logo { display: block; margin: 0 auto 14px; border-radius: 50%; box-shadow: 0 0 0 4px rgba(255,248,236,.25); }

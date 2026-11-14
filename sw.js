@@ -1,7 +1,7 @@
 // Keeps the hunt working when there is no signal.
 // Network first (so content updates show up straight away), saved copy as the fallback.
 var CACHE = "stoepsit-hunt-v1";
-var FILES = ["./", "index.html", "stop.html", "style.css", "app.js", "data.js"];
+var FILES = ["./", "index.html", "stop.html", "style.css", "app.js", "data.js", "logo.png", "icon-180.png"];
 
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(FILES); }));
