@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#b5532a">
+  <title>Stoepsit Fees Scavenger Hunt</title>
+  <meta name="description" content="Hunt for QR codes hidden across Rhodes. Win prizes and uncover the stories behind our historic landmarks.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="kicker" id="kicker">Rhodes · This weekend</div>
+      <h1 id="title">Stoepsit Fees Scavenger Hunt</h1>
+      <p id="intro"></p>
+    </section>
+
+    <section class="card">
+      <div class="progress">
+        <div class="num" id="count">0</div>
+        <div>
+          <div><strong>codes found</strong> <span class="muted" id="of"></span></div>
+          <div class="muted" id="split"></div>
+        </div>
+      </div>
+      <div class="bar"><span id="bar" style="width:0"></span></div>
+    </section>
+
+    <section class="card">
+      <h2>How to play</h2>
+      <ol class="steps">
+        <li>Wander around Rhodes and look for our QR code posters.</li>
+        <li>Open your phone camera and point it at the code.</li>
+        <li>Tap the link to see a prize or the story of the landmark.</li>
+        <li>Your finds are saved on your phone. Come back here to see them all.</li>
+      </ol>
+      <p class="muted" id="contact" style="margin-top:12px"></p>
+    </section>
+
+    <section class="card" id="found-card" hidden>
+      <h2>Your finds</h2>
+      <ul class="found-list" id="found"></ul>
+    </section>
+
+    <footer>Made for the Stoepsit Fees · Rhodes</footer>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    var H = window.HUNT, s = Hunt.state(), esc = Hunt.esc;
+    document.getElementById("title").textContent = H.title;
+    document.getElementById("intro").textContent = H.intro;
+    document.getElementById("kicker").textContent = H.town + " · " + H.dates;
+    if (H.contact) document.getElementById("contact").textContent = H.contact;
+
+    var total = H.stops.length;
+    var found = H.stops.filter(function (x) { return s.found[x.code]; })
+      .sort(function (a, b) { return s.found[b.code] - s.found[a.code]; });
+    var nH = found.filter(function (x) { return x.type === "history"; }).length;
+    var nP = found.length - nH;
+
+    document.getElementById("count").textContent = found.length;
+    document.getElementById("of").textContent = "of " + total;
+    document.getElementById("split").textContent = nH + " landmarks · " + nP + " prizes";
+    document.getElementById("bar").style.width = (total ? (100 * found.length / total) : 0) + "%";
+
+    if (found.length) {
+      document.getElementById("found-card").hidden = false;
+      document.getElementById("found").innerHTML = found.map(function (x) {
+        return '<li><a href="stop.html?c=' + encodeURIComponent(x.code) + '">' +
+          '<span class="tag ' + x.type + '">' + (x.type === "prize" ? "Prize" : "Landmark") + "</span>" +
+          "<span>" + esc(x.name) + "</span></a></li>";
+      }).join("");
+    }
+  </script>
+</body>
+</html>

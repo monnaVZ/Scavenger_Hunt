@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#b5532a">
+  <title>Stoepsit Fees Scavenger Hunt</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap" id="main"></main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    var H = window.HUNT, esc = Hunt.esc, main = document.getElementById("main");
+    var code = new URLSearchParams(location.search).get("c");
+    var stop = Hunt.findStop(code);
+    var html = "";
+
+    if (!stop) {
+      html =
+        '<section class="card"><h2>Hmm, that code isn\'t ours</h2>' +
+        "<p>We couldn't find this QR code. Try scanning it again, or head back to see your finds.</p></section>";
+    } else {
+      var r = Hunt.markFound(stop.code), s = r.state;
+      var total = H.stops.length, n = Object.keys(s.found).filter(function (c) { return Hunt.findStop(c); }).length;
+      document.title = stop.name + " · " + H.title;
+
+      html += '<p class="' + (r.isNew ? "new-find" : "muted") + '">' +
+        (r.isNew ? "New find! " : "You found this one already. ") +
+        "That's " + n + " of " + total + ".</p>";
+
+      if (stop.type === "prize") {
+        html +=
+          '<section class="card prize-box">' +
+          '<span class="tag prize badge">You found a prize</span>' +
+          "<h1>" + esc(stop.name) + "</h1>" +
+          '<div class="big">' + esc(stop.prize) + "</div>" +
+          (stop.sponsor ? '<p class="muted">Thanks to ' + esc(stop.sponsor) + "</p>" : "") +
+          "<p>" + esc(stop.claim) + "</p>" +
+          (stop.limit ? '<p class="muted">' + esc(stop.limit) + "</p>" : "") +
+          '<div class="claim-ticket">Show this screen to claim<br>' +
+          "Player <strong>" + esc(s.player) + "</strong> · " + esc(stop.code) + "<br>" +
+          "Found " + esc(Hunt.fmtTime(s.found[stop.code])) + "</div>" +
+          "</section>";
+      } else {
+        html +=
+          '<section class="card">' +
+          '<span class="tag history badge">Historic landmark</span>' +
+          "<h1>" + esc(stop.name) + "</h1>" +
+          (stop.year ? '<p class="muted">' + esc(stop.year) + "</p>" : "") +
+          (stop.image ? '<img class="stop-img" src="' + esc(stop.image) + '" alt="' + esc(stop.name) + '">' : "") +
+          (stop.story || []).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("") +
+          (stop.funFact ? '<p class="funfact"><strong>Did you know?</strong> ' + esc(stop.funFact) + "</p>" : "") +
+          "</section>";
+      }
+    }
+
+    html += '<a class="btn" href="index.html">See all my finds</a>' +
+      '<footer>' + esc(H.title) + " · " + esc(H.town) + "</footer>";
+    main.innerHTML = html;
+  </script>
+</body>
+</html>
